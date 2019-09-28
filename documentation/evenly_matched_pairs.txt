@@ -1,0 +1,10 @@
+2 element combination of a six element set.
+
+https://socratic.org/questions/how-many-different-two-person-teams-can-be-made-from-6-people
+
+
+Given a need to create a pair identified as P
+Given a set of data 
+
+
+
