@@ -2,24 +2,13 @@ package scratch;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class PrayerEvent implements Event {
 
-    Series series = null;
     Timeframe timeFrame = null;
     private List<Participant> participants;
 
 
-
-    @Override
-    public Series getSeries() {
-        return series;
-    }
-
-    public void setSeries(Series series) {
-        this.series = series;
-    }
 
     @Override
     public Timeframe getTimeFrame() {
