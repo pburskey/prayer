@@ -73,7 +73,7 @@ public class Team implements Match
             buffer.append(participant.identifier());
             if (iterator. hasNext())
             {
-                buffer.append(",");
+                buffer.append(" and ");
             }
         }
         return buffer.toString();
