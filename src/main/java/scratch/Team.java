@@ -1,8 +1,6 @@
 package scratch;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class Team implements Match
 {
@@ -30,6 +28,15 @@ public class Team implements Match
         }
         return this.participants;
     }
+
+    public List<Participant> getParticipantsAsList()
+    {
+        List<Participant> list = new ArrayList<>();
+        list.addAll(this.getParticipants());
+        return list;
+    }
+
+
 
     @Override
     public Match addParticipant(Participant participant) {

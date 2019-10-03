@@ -22,7 +22,7 @@ public class PrayerCircle {
     {
 
         PrayerCircle prayerCircle = new PrayerCircle();
-        int participantsSize = 8;
+        int participantsSize = 4;
 
         for (int i = 0; i < (participantsSize); i++)
         {
@@ -43,18 +43,21 @@ public class PrayerCircle {
 
         Series series = schedule.series();
 
+        int i = 1;
         for(Event event : series.getEvents())
         {
-            System.out.println("Event Start");
+            System.out.println("Event " + i + " Start");
             for(Participant participant: event.getParticipants())
             {
                 Team team = (Team) participant;
-                Iterator<Participant> iterator = team.getParticipants().iterator();
+                List<Participant> aListOfParticipants = Participant.sortByIdentifier(team.getParticipantsAsList());
+                Iterator<Participant> iterator = aListOfParticipants.iterator();
                 PrayerParticipant first = (PrayerParticipant) iterator.next();
                 PrayerParticipant second = (PrayerParticipant) iterator.next();
                 PrayerParticipant lead = (PrayerParticipant) team.getLead();
                 String pattern = "Team [ {0} {1} ] Lead: {2}";
                 MessageFormat format = new MessageFormat(pattern);
+
                 String[] strings = new String[]
                         {
                                 first.getFirst()
@@ -63,7 +66,9 @@ public class PrayerCircle {
                         };
                 System.out.println(format.format(strings));
             }
-            System.out.println("Event End");
+            System.out.println("");
+            System.out.println("");
+            i++;
         }
 
 

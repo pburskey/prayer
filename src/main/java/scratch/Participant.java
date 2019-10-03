@@ -1,5 +1,6 @@
 package scratch;
 
+import java.util.Comparator;
 import java.util.List;
 
 public interface Participant
@@ -25,5 +26,25 @@ public interface Participant
 
         return itDoes;
     }
+
+
+    public static List<Participant> sortByIdentifier(List<Participant> aList)
+    {
+        aList.sort(new SortByIdentifier());
+        return aList;
+    }
+
+
+    public static class SortByIdentifier implements Comparator<Participant>
+    {
+        @Override
+        public int compare(Participant source, Participant target) {
+            String a = source.identifier();
+            String b = target == null ? "" : target.identifier();
+            return a.compareToIgnoreCase(b);
+        }
+    }
+
+
 
 }
