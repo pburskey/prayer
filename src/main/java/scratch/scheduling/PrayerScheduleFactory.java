@@ -8,8 +8,8 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
     public ConfigurableItem<Integer> TEAM_SIZE = new ConfigurableItem<Integer>("TEAM_SIZE", 2);
     public ConfigurableItem<Boolean> HAS_LEAD = new ConfigurableItem<Boolean>("HAS_LEAD", true);
-    public ConfigurableItem<Integer> NUMBER_SERIES = new ConfigurableItem<Integer>("SCHEDULE_DURATION", 10);
-    public ConfigurableItem<Integer> SERIES_LENGTH_DAYS = new ConfigurableItem<Integer>("SCHEDULE_DURATION", 4);
+    public ConfigurableItem<Integer> NUMBER_SERIES = new ConfigurableItem<Integer>("SCHEDULE_DURATION_SERIES", 10);
+    public ConfigurableItem<Integer> SERIES_LENGTH_DAYS = new ConfigurableItem<Integer>("SCHEDULE_DURATION_DAYS", 4);
 
     @Override
     public Schedule buildFor(List<Participant> participants, ConfigurableItem ... items) {
@@ -33,31 +33,97 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
         Series series = schedule.series();
 
-        for (int i = 0; i < numberOfSeriesItems.value(); i++) {
+
+        ParticipantMatchesBag matchesBag = new ParticipantMatchesBag();
+        matchesBag.createCombinations(participants.toArray(new Participant[participants.size()]), groupSize.value());
+
+        List<Match> listOfAvailableMatches = null;
+
+
+        for (int i = 0; i < numberOfSeriesItems.value(); i++)
+        {
 
             PrayerEvent prayerEvent = new PrayerEvent();
             series.addEvent(prayerEvent);
-            List<Participant> randomList = new ArrayList();
-            randomList.addAll(participants);
-            Random random = new Random();
-            while (!randomList.isEmpty())
+
+            List<Participant> seriesParticipants = this.mixUpList(new ArrayList<Participant>(participants));
+
+
+            while(!seriesParticipants.isEmpty())
             {
-                Team team = new Team();
-                for (int teamMemberCounter = 0; teamMemberCounter < groupSize.value(); teamMemberCounter++)
+                Participant firstParticipant = seriesParticipants.iterator().next();
+
+                Match seriesMatch = null;
+                /*
+                reach into the list of available matches and find a match containing this particpant...
+                 */
+
+                if (listOfAvailableMatches == null || listOfAvailableMatches.isEmpty())
                 {
-                    int choice = random.nextInt(randomList.size());
-                    Participant participant = randomList.remove(choice);
-                    team.addParticipant(participant);
+                    listOfAvailableMatches = matchesBag.combinationsAsList();
                 }
 
-                if (teamsHaveLead.value())
+                while(seriesMatch == null)
                 {
-                    Participant teamLead = team.getParticipants().iterator().next();
-                    team.setLead(teamLead);
+                    for(Match aPotentialMatch : listOfAvailableMatches)
+                    {
+                        if (aPotentialMatch.hasParticipant(firstParticipant))
+                        {
+                            /*
+                            cool lets roll with this if the matches other participants are available for us to choose yet...
+                             */
+                            boolean participantsAvailable = Match.containsParticipantsFromList(aPotentialMatch, seriesParticipants);
+
+                            if (participantsAvailable)
+                            {
+                                seriesMatch = aPotentialMatch;
+                                for(Iterator iterator = aPotentialMatch.getParticipants().iterator(); iterator.hasNext();)
+                                {
+                                    Participant aMatchParticipant = (Participant) iterator.next();
+                                    seriesParticipants.remove(aMatchParticipant);
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (seriesMatch == null)
+                    {
+                        System.out.println("not able to find a match for participant: " + firstParticipant);
+                        listOfAvailableMatches = matchesBag.combinationsAsList();
+                    }
+
+
+
                 }
 
-                prayerEvent.addParticipant(team);
+
+
+                if (seriesMatch != null)
+                {
+                    listOfAvailableMatches.remove(seriesMatch);
+
+                    if (teamsHaveLead.value() && seriesMatch.isTeam())
+                    {
+                        Team team = (Team) seriesMatch;
+                        Participant teamLead = team.getParticipants().iterator().next();
+                        team.setLead(teamLead);
+                    }
+
+                    prayerEvent.addParticipant(seriesMatch);
+                }
+                else
+                {
+                    System.out.println("FATAL......not able to find a match for participant: " + firstParticipant);
+                }
+
+
             }
+
+
+
+
+
 
 
         }
@@ -65,4 +131,23 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
         return schedule;
     }
+
+    private List mixUpList(List originalList)
+    {
+        List newList = new ArrayList<>();
+
+        Random random = new Random();
+        while (!originalList.isEmpty())
+        {
+
+            int choice = random.nextInt(originalList.size());
+            Object anObject = originalList.remove(choice);
+            newList.add(anObject);
+
+        }
+        return newList;
+
+    }
+
+
 }

@@ -29,4 +29,10 @@ public class PrayerParticipant implements Participant
                 ", last='" + last + '\'' +
                 '}';
     }
+
+
+    @Override
+    public String identifier() {
+        return this.getLast() + this.getFirst();
+    }
 }

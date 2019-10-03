@@ -47,4 +47,7 @@ public class PrayerSeries implements Series {
         this.events.add(event);
         return this;
     }
+
+
+
 }
