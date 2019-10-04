@@ -1,4 +1,4 @@
-package scratch.scheduling;
+package com.burskey.prayer.schedule;
 
 public class  ConfigurableItem <T> extends AbstractConfigurable implements Configurable {
 

@@ -1,4 +1,4 @@
-package scratch.scheduling;
+package com.burskey.prayer.schedule;
 
 import java.util.HashMap;
 import java.util.Map;

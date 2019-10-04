@@ -1,7 +1,7 @@
-package scratch.scheduling;
+package com.burskey.prayer.schedule;
 
-import scratch.Participant;
-import scratch.Series;
+import com.burskey.prayer.participant.Participant;
+import com.burskey.prayer.event.Series;
 
 import java.util.List;
 

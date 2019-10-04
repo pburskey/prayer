@@ -1,4 +1,4 @@
-package scratch;
+package com.burskey.prayer;
 
 public interface Iteration {
 }

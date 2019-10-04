@@ -1,4 +1,4 @@
-package scratch;
+package com.burskey.prayer.participant;
 
 import java.util.Comparator;
 import java.util.List;

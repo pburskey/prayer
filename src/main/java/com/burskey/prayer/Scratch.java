@@ -1,4 +1,4 @@
-package main.java.scratch;
+package com.burskey.prayer;
 
 import java.util.*;
 

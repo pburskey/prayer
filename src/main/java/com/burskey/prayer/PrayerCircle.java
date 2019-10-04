@@ -1,10 +1,12 @@
-package scratch;
+package com.burskey.prayer;
 
-import scratch.scheduling.ConfigurableItem;
-import scratch.scheduling.PrayerScheduleFactory;
-import scratch.scheduling.Schedule;
+import com.burskey.prayer.participant.Participant;
+import com.burskey.prayer.participant.PrayerParticipant;
+import com.burskey.prayer.schedule.ConfigurableItem;
+import com.burskey.prayer.schedule.PrayerScheduleFactory;
+import com.burskey.prayer.schedule.Schedule;
+import com.burskey.prayer.utility.CharacterHelper;
 
-import java.text.MessageFormat;
 import java.util.*;
 
 public class PrayerCircle {

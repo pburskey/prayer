@@ -1,4 +1,6 @@
-package scratch;
+package com.burskey.prayer.event;
+
+import com.burskey.prayer.Timeframe;
 
 import java.util.ArrayList;
 import java.util.Date;

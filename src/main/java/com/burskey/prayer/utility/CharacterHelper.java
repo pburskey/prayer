@@ -1,4 +1,4 @@
-package scratch;
+package com.burskey.prayer.utility;
 
 public class CharacterHelper {
     public static final char[] lowerCaseAlphabet = new char[26];

@@ -1,4 +1,4 @@
-package scratch;
+package com.burskey.prayer.participant;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package scratch;
+package com.burskey.prayer.participant;
 
 public class PrayerParticipant implements Participant
 {

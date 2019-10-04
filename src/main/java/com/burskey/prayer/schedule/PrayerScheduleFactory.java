@@ -1,6 +1,11 @@
-package scratch.scheduling;
+package com.burskey.prayer.schedule;
 
-import scratch.*;
+import com.burskey.prayer.event.PrayerEvent;
+import com.burskey.prayer.event.Series;
+import com.burskey.prayer.participant.Match;
+import com.burskey.prayer.participant.Participant;
+import com.burskey.prayer.participant.ParticipantMatchesBag;
+import com.burskey.prayer.participant.Team;
 
 import java.util.*;
 

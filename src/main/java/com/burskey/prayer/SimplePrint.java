@@ -1,4 +1,9 @@
-package scratch;
+package com.burskey.prayer;
+
+import com.burskey.prayer.event.Event;
+import com.burskey.prayer.participant.Participant;
+import com.burskey.prayer.participant.PrayerParticipant;
+import com.burskey.prayer.participant.Team;
 
 import java.text.MessageFormat;
 import java.util.Iterator;
