@@ -55,26 +55,51 @@ public class PrayerScheduleFactory implements ScheduleFactory {
             }
         }
 
+        this.fillSchedule(schedule, participants);
+
+
+
+
+        return schedule;
+    }
+
+    private List mixUpList(List originalList)
+    {
+        List newList = new ArrayList<>();
+
+        Random random = new Random();
+        while (!originalList.isEmpty())
+        {
+
+            int choice = random.nextInt(originalList.size());
+            Object anObject = originalList.remove(choice);
+            newList.add(anObject);
+
+        }
+        return newList;
+
+    }
+
+
+    private void fillSchedule(Schedule schedule, List<Participant> participants)
+    {
+
         ConfigurableItem<Integer> groupSize = schedule.configuration().getInteger(TEAM_SIZE);
         ConfigurableItem<Boolean> teamsHaveLead = schedule.configuration().getBoolean(HAS_LEAD);
         ConfigurableItem<Integer> numberOfSeriesItems = schedule.configuration().getInteger(NUMBER_SERIES);
         ConfigurableItem<Integer> seriesLengthInDays = schedule.configuration().getInteger(SERIES_LENGTH_DAYS);
 
 
-        Series series = schedule.series();
-
 
         ParticipantMatchesBag matchesBag = new ParticipantMatchesBag();
         matchesBag.createCombinations(participants.toArray(new Participant[participants.size()]), groupSize.value());
-
         List<Match> listOfAvailableMatches = null;
-
 
         for (int i = 0; i < numberOfSeriesItems.value(); i++)
         {
 
             PrayerEvent prayerEvent = new PrayerEvent();
-            series.addEvent(prayerEvent);
+            schedule.series().addEvent(prayerEvent);
 
             List<Participant> seriesParticipants = this.mixUpList(new ArrayList<Participant>(participants));
 
@@ -157,27 +182,8 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
 
         }
-
-
-        return schedule;
     }
 
-    private List mixUpList(List originalList)
-    {
-        List newList = new ArrayList<>();
-
-        Random random = new Random();
-        while (!originalList.isEmpty())
-        {
-
-            int choice = random.nextInt(originalList.size());
-            Object anObject = originalList.remove(choice);
-            newList.add(anObject);
-
-        }
-        return newList;
-
-    }
 
 
 }
