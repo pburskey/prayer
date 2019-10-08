@@ -15,8 +15,5 @@ public class EvenNumberOfParticipants
             intEqualTo(0).test(participants.size() % 2).throwIfInvalid("Participants must be evenly dividable by 2");
         }
 
-
-
-
     }
 }

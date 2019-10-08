@@ -8,6 +8,7 @@ import com.burskey.prayer.schedule.PrayerScheduleFactory;
 import com.burskey.prayer.schedule.Schedule;
 import com.burskey.prayer.utility.CharacterHelper;
 import com.burskey.prayer.validation.EvenNumberOfParticipants;
+import com.burskey.prayer.validation.PrayerCircleValidation;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -40,8 +41,7 @@ public class PrayerCircle {
             prayerCircle.getParticipants().add(participant);
         }
 
-        EvenNumberOfParticipants validation = new EvenNumberOfParticipants();
-        validation.validate(prayerCircle.getParticipants());
+        prayerCircle.validate();
 
 
         Schedule schedule = prayerCircle.getSchedule(new ConfigurableItem<Integer>(PrayerScheduleFactory.TEAM_SIZE, 2)
@@ -90,6 +90,12 @@ public class PrayerCircle {
 
         }
         return schedule;
+    }
+
+
+    public void validate()
+    {
+        (new PrayerCircleValidation()).validate(this);
     }
 
 
