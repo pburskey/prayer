@@ -41,13 +41,16 @@ public class PrayerCircle {
             prayerCircle.getParticipants().add(participant);
         }
 
-        prayerCircle.validate();
+
 
 
         Schedule schedule = prayerCircle.getSchedule(new ConfigurableItem<Integer>(PrayerScheduleFactory.TEAM_SIZE, 2)
                 , new ConfigurableItem<Boolean>(PrayerScheduleFactory.HAS_LEAD, true)
                 , new ConfigurableItem<Integer>(PrayerScheduleFactory.NUMBER_SERIES, 10)
                 , new ConfigurableItem<Integer>(PrayerScheduleFactory.SERIES_LENGTH_DAYS, 4));
+
+
+        prayerCircle.validate();
 
         ScheduleAsCSVPrinter print = new ScheduleAsCSVPrinter();
         print.print(prayerCircle);

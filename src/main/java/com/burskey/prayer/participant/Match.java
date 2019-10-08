@@ -24,5 +24,8 @@ public interface Match extends Participant
         return participantsAvailable;
     }
 
-
+    @Override
+    default boolean isMatch() {
+        return true;
+    }
 }

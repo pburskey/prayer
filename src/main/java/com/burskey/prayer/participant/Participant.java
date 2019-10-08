@@ -46,5 +46,9 @@ public interface Participant
     }
 
 
+    public default boolean isMatch()
+    {
+        return false;
+    }
 
 }

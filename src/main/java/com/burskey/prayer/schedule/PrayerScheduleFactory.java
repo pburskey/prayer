@@ -55,6 +55,7 @@ public class PrayerScheduleFactory implements ScheduleFactory {
             }
         }
 
+
         this.fillSchedule(schedule, participants);
 
 
