@@ -11,10 +11,35 @@ import java.util.*;
 
 public class PrayerScheduleFactory implements ScheduleFactory {
 
-    public ConfigurableItem<Integer> TEAM_SIZE = new ConfigurableItem<Integer>("TEAM_SIZE", 2);
-    public ConfigurableItem<Boolean> HAS_LEAD = new ConfigurableItem<Boolean>("HAS_LEAD", true);
-    public ConfigurableItem<Integer> NUMBER_SERIES = new ConfigurableItem<Integer>("SCHEDULE_DURATION_SERIES", 10);
-    public ConfigurableItem<Integer> SERIES_LENGTH_DAYS = new ConfigurableItem<Integer>("SCHEDULE_DURATION_DAYS", 4);
+
+
+
+    public static String TEAM_SIZE = "TEAM_SIZE";
+    public static String HAS_LEAD = "HAS_LEAD";
+    public static String NUMBER_SERIES = "NUMBER_SERIES";
+    public static String SERIES_LENGTH_DAYS = "SERIES_LENGTH_DAYS";
+
+
+    private SchedulingConfiguration defaultConfiguration()
+    {
+        SchedulingConfiguration defaultConfiguration = new SchedulingConfiguration();
+
+
+        ConfigurableItem[] items = new ConfigurableItem[] {
+                new ConfigurableItem<Integer>(TEAM_SIZE, 2)
+                , new ConfigurableItem<Boolean>(HAS_LEAD, true)
+                , new ConfigurableItem<Integer>(NUMBER_SERIES, 10)
+                , new ConfigurableItem<Integer>(SERIES_LENGTH_DAYS, 4)};
+
+
+        for (ConfigurableItem item : items) {
+            defaultConfiguration.configuration().put(item.name(), item);
+        }
+
+        return defaultConfiguration;
+
+    }
+
 
     @Override
     public Schedule buildFor(List<Participant> participants, ConfigurableItem ... items) {
@@ -30,10 +55,10 @@ public class PrayerScheduleFactory implements ScheduleFactory {
             }
         }
 
-        ConfigurableItem<Integer> groupSize = (ConfigurableItem<Integer>) schedule.configuration().configuration().get(TEAM_SIZE.name());
-        ConfigurableItem<Boolean> teamsHaveLead = (ConfigurableItem<Boolean>) schedule.configuration().configuration().get(HAS_LEAD.name());
-        ConfigurableItem<Integer> numberOfSeriesItems = (ConfigurableItem<Integer>) schedule.configuration().configuration().get(NUMBER_SERIES.name());
-        ConfigurableItem<Integer> seriesLengthInDays = (ConfigurableItem<Integer>) schedule.configuration().configuration().get(SERIES_LENGTH_DAYS.name());
+        ConfigurableItem<Integer> groupSize = schedule.configuration().getInteger(TEAM_SIZE);
+        ConfigurableItem<Boolean> teamsHaveLead = schedule.configuration().getBoolean(HAS_LEAD);
+        ConfigurableItem<Integer> numberOfSeriesItems = schedule.configuration().getInteger(NUMBER_SERIES);
+        ConfigurableItem<Integer> seriesLengthInDays = schedule.configuration().getInteger(SERIES_LENGTH_DAYS);
 
 
         Series series = schedule.series();

@@ -1,5 +1,6 @@
-package com.burskey.prayer;
+package com.burskey.prayer.print;
 
+import com.burskey.prayer.PrayerCircle;
 import com.burskey.prayer.event.Event;
 import com.burskey.prayer.participant.Participant;
 import com.burskey.prayer.participant.PrayerParticipant;

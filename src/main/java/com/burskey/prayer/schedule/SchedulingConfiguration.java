@@ -14,7 +14,25 @@ public class SchedulingConfiguration {
         }
 
         return map;
+    }
 
+
+    public ConfigurableItem<Integer> getInteger(String name)
+    {
+        ConfigurableItem item = (ConfigurableItem) this.configuration().get(name);
+        return item;
+    }
+
+    public ConfigurableItem<Boolean> getBoolean(String name)
+    {
+        ConfigurableItem item = (ConfigurableItem) this.configuration().get(name);
+        return item;
+    }
+
+    public ConfigurableItem<String> getString(String name)
+    {
+        ConfigurableItem item = (ConfigurableItem) this.configuration().get(name);
+        return item;
     }
 
 

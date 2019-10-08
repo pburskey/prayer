@@ -12,5 +12,4 @@ public interface Schedule
     public SchedulingConfiguration configuration();
     public ScheduleFactory factory();
 
-
 }
