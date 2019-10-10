@@ -29,12 +29,7 @@ public class Team implements Match
         return this.participants;
     }
 
-    public List<Participant> getParticipantsAsList()
-    {
-        List<Participant> list = new ArrayList<>();
-        list.addAll(this.getParticipants());
-        return list;
-    }
+
 
 
 

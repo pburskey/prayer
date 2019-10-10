@@ -96,11 +96,13 @@ public class PrayerScheduleFactory implements ScheduleFactory {
         matchesBag.createCombinations(participants.toArray(new Participant[participants.size()]), groupSize.value());
         List<Match> listOfAvailableMatches = null;
 
+        PrayerEvent priorPrayerEvent = null;
+        PrayerEvent currentPrayerEvent = null;
         for (int i = 0; i < numberOfSeriesItems.value(); i++)
         {
-
-            PrayerEvent prayerEvent = new PrayerEvent();
-            schedule.series().addEvent(prayerEvent);
+            priorPrayerEvent = currentPrayerEvent;
+            currentPrayerEvent = new PrayerEvent();
+            schedule.series().addEvent(currentPrayerEvent);
 
             List<Participant> seriesParticipants = this.mixUpList(new ArrayList<Participant>(participants));
 
@@ -109,7 +111,7 @@ public class PrayerScheduleFactory implements ScheduleFactory {
             {
                 Participant firstParticipant = seriesParticipants.iterator().next();
 
-                Match seriesMatch = null;
+                 Match seriesMatch = null;
                 /*
                 reach into the list of available matches and find a match containing this particpant...
                  */
@@ -119,9 +121,12 @@ public class PrayerScheduleFactory implements ScheduleFactory {
                     listOfAvailableMatches = matchesBag.combinationsAsList();
                 }
 
+                List<Match> matchesContainingParticipant = Match.filterMatchesToOnlyThoseContaining(listOfAvailableMatches, firstParticipant);
+
+
                 while(seriesMatch == null)
                 {
-                    for(Match aPotentialMatch : listOfAvailableMatches)
+                    for(Match aPotentialMatch : matchesContainingParticipant)
                     {
                         if (aPotentialMatch.hasParticipant(firstParticipant))
                         {
@@ -130,7 +135,17 @@ public class PrayerScheduleFactory implements ScheduleFactory {
                              */
                             boolean participantsAvailable = Match.containsParticipantsFromList(aPotentialMatch, seriesParticipants);
 
-                            if (participantsAvailable)
+                            boolean matchFoundInPriorEvent = false;
+                            /*
+                            lets see if the prior prayer event contains this potential match.
+                             */
+                            if (priorPrayerEvent != null && !priorPrayerEvent.getParticipants().isEmpty())
+                            {
+                                matchFoundInPriorEvent = priorPrayerEvent.getParticipants().contains(aPotentialMatch);
+                            }
+
+
+                            if (participantsAvailable && !matchFoundInPriorEvent)
                             {
                                 seriesMatch = aPotentialMatch;
                                 for(Iterator iterator = aPotentialMatch.getParticipants().iterator(); iterator.hasNext();)
@@ -147,6 +162,7 @@ public class PrayerScheduleFactory implements ScheduleFactory {
                     {
                         System.out.println("not able to find a match for participant: " + firstParticipant);
                         listOfAvailableMatches = matchesBag.combinationsAsList();
+                        matchesContainingParticipant = Match.filterMatchesToOnlyThoseContaining(listOfAvailableMatches, firstParticipant);
                     }
 
 
@@ -166,7 +182,7 @@ public class PrayerScheduleFactory implements ScheduleFactory {
                         team.setLead(teamLead);
                     }
 
-                    prayerEvent.addParticipant(seriesMatch);
+                    currentPrayerEvent.addParticipant(seriesMatch);
                 }
                 else
                 {

@@ -3,6 +3,7 @@ package com.burskey.prayer.schedule;
 import com.burskey.prayer.event.Event;
 import com.burskey.prayer.participant.Match;
 import com.burskey.prayer.participant.Participant;
+import com.burskey.validation.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,8 @@ public class PrayerScheduleValidation {
                 {
                     if (currentMatches.contains(lastMatch))
                     {
-                        System.out.println("Found match: " + lastMatch + " to be repeating in schedule event: ");
+                        ValidationResult result = ValidationResult.fail("Found match: " + lastMatch + " to be repeating in schedule event: ");
+                        result.throwIfInvalid();
                     }
                 }
             }
