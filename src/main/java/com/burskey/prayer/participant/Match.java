@@ -65,4 +65,21 @@ public interface Match extends Participant
         }
         return filteredList;
     }
+
+
+    public static Match getMatchContaining(List<Match> listOfMatches, List<Participant> listOfParticipants)
+    {
+        Match foundMatch = null;
+        for(Match match : listOfMatches)
+        {
+            if (containsParticipantsFromList(match, listOfParticipants))
+            {
+                foundMatch = match;
+                break;
+            }
+        }
+        return foundMatch;
+    }
+
+
 }

@@ -148,11 +148,6 @@ public class PrayerScheduleFactory implements ScheduleFactory {
                             if (participantsAvailable && !matchFoundInPriorEvent)
                             {
                                 seriesMatch = aPotentialMatch;
-                                for(Iterator iterator = aPotentialMatch.getParticipants().iterator(); iterator.hasNext();)
-                                {
-                                    Participant aMatchParticipant = (Participant) iterator.next();
-                                    seriesParticipants.remove(aMatchParticipant);
-                                }
                                 break;
                             }
                         }
@@ -163,6 +158,13 @@ public class PrayerScheduleFactory implements ScheduleFactory {
                         System.out.println("not able to find a match for participant: " + firstParticipant);
                         listOfAvailableMatches = matchesBag.combinationsAsList();
                         matchesContainingParticipant = Match.filterMatchesToOnlyThoseContaining(listOfAvailableMatches, firstParticipant);
+
+                        if (groupSize.value() == seriesParticipants.size())
+                        {
+                            seriesMatch = Match.getMatchContaining(matchesContainingParticipant, seriesParticipants);
+
+                        }
+
                     }
 
 
@@ -173,6 +175,13 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
                 if (seriesMatch != null)
                 {
+                    for(Iterator iterator = seriesMatch.getParticipants().iterator(); iterator.hasNext();)
+                    {
+                        Participant aMatchParticipant = (Participant) iterator.next();
+                        seriesParticipants.remove(aMatchParticipant);
+                    }
+
+
                     listOfAvailableMatches.remove(seriesMatch);
 
                     if (teamsHaveLead.value() && seriesMatch.isTeam())
