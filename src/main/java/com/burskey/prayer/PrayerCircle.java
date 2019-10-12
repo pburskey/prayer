@@ -79,26 +79,24 @@ public class PrayerCircle {
     }
 
     public Schedule getSchedule() {
-        if (this.schedule == null)
-        {
+        if (this.schedule == null) {
             PrayerScheduleFactory factory = new PrayerScheduleFactory();
 
-//            int retry = 1;
-//            while(this.schedule == null && retry < 6)
-//            {
-//                try
-//                {
-                    Schedule aSchedule = factory.buildFor(this.getParticipants(), this.getConfiguration());
-                    this.schedule = aSchedule;
-//                    this.validate();
+            int retry = 1;
+            while (this.schedule == null && retry < 5) {
+                try {
+                    this.schedule = factory.buildFor(this.getParticipants(), this.getConfiguration());
+                    this.validate();
 
-//                }
-//                catch (Exception e)
-//                {
-//                    retry++;
-//                    System.out.println("Schedule is invalid. Try #: " + retry);
-//                }
+                }
+                catch (Exception e) {
+                    System.out.println("Schedule is invalid. Try #: " + retry);
+                    this.schedule = null;
+                    retry++;
+
+                }
             }
+        }
 
         return schedule;
     }
