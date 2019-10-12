@@ -1,6 +1,7 @@
 package com.burskey.prayer.schedule;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class SchedulingConfiguration {
@@ -35,6 +36,12 @@ public class SchedulingConfiguration {
         return item;
     }
 
+    public ConfigurableItem get(String name)
+    {
+        ConfigurableItem item = (ConfigurableItem) this.configuration().get(name);
+        return item;
+    }
+
     public SchedulingConfiguration add(Configurable aConfigurable)
     {
         if (aConfigurable != null)
@@ -43,6 +50,30 @@ public class SchedulingConfiguration {
         }
         return this;
     }
+
+    public Iterator<Configurable> iterator()
+    {
+        return this.configuration().values().iterator();
+    }
+
+    public SchedulingConfiguration merge(Configurable aConfigurable)
+    {
+        if (aConfigurable != null)
+        {
+            Configurable present = this.get(aConfigurable.name());
+            if (present == null)
+            {
+                this.add(aConfigurable);
+            }
+            else
+            {
+                present.value(aConfigurable.value());
+            }
+        }
+        return this;
+    }
+
+
 
 
 }

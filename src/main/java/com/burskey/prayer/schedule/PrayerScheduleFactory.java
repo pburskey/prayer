@@ -7,7 +7,10 @@ import com.burskey.prayer.participant.Participant;
 import com.burskey.prayer.participant.ParticipantMatchesBag;
 import com.burskey.prayer.participant.Team;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class PrayerScheduleFactory implements ScheduleFactory {
 
@@ -16,19 +19,8 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
 
     @Override
-    public Schedule buildFor(List<Participant> participants, ConfigurableItem ... items) {
-        Schedule schedule = new PrayerSchedule(participants, this);
-
-
-        if (items != null)
-        {
-            Map configurationMap = (Map) schedule.configuration().configuration();
-            for(Configurable item : items)
-            {
-                configurationMap.put(item.name(), item);
-            }
-        }
-
+    public Schedule buildFor(List<Participant> participants, SchedulingConfiguration configuration) {
+        Schedule schedule = new PrayerSchedule(participants, this, configuration);
 
         this.fillSchedule(schedule, participants);
 

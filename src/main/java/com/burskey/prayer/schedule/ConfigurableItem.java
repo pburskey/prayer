@@ -15,4 +15,9 @@ public class  ConfigurableItem <T> extends AbstractConfigurable implements Confi
         return this.value;
     }
 
+
+    @Override
+    public void value(Object aValue) {
+        this.value = value;
+    }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 public interface ScheduleFactory
 {
 
-    public Schedule buildFor(List<Participant> participants, ConfigurableItem ... items);
+    public Schedule buildFor(List<Participant> participants, SchedulingConfiguration configuration);
 }

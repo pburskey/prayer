@@ -16,9 +16,10 @@ public class PrayerSchedule implements Schedule {
     private ScheduleFactory factory = null;
 
 
-    public PrayerSchedule(List<Participant> participants, ScheduleFactory factory) {
+    public PrayerSchedule(List<Participant> participants, ScheduleFactory factory, SchedulingConfiguration configuration) {
         this.participants = participants;
         this.factory = factory;
+        this.configuration = configuration;
     }
 
     @Override
