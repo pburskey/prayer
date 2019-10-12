@@ -35,5 +35,14 @@ public class SchedulingConfiguration {
         return item;
     }
 
+    public SchedulingConfiguration add(Configurable aConfigurable)
+    {
+        if (aConfigurable != null)
+        {
+            this.configuration().put(aConfigurable.name(), aConfigurable);
+        }
+        return this;
+    }
+
 
 }

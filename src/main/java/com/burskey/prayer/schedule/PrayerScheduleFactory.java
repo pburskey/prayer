@@ -1,7 +1,7 @@
 package com.burskey.prayer.schedule;
 
+import com.burskey.prayer.PrayerCircle;
 import com.burskey.prayer.event.PrayerEvent;
-import com.burskey.prayer.event.Series;
 import com.burskey.prayer.participant.Match;
 import com.burskey.prayer.participant.Participant;
 import com.burskey.prayer.participant.ParticipantMatchesBag;
@@ -13,32 +13,6 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
 
 
-
-    public static String TEAM_SIZE = "TEAM_SIZE";
-    public static String HAS_LEAD = "HAS_LEAD";
-    public static String NUMBER_SERIES = "NUMBER_SERIES";
-    public static String SERIES_LENGTH_DAYS = "SERIES_LENGTH_DAYS";
-
-
-    private SchedulingConfiguration defaultConfiguration()
-    {
-        SchedulingConfiguration defaultConfiguration = new SchedulingConfiguration();
-
-
-        ConfigurableItem[] items = new ConfigurableItem[] {
-                new ConfigurableItem<Integer>(TEAM_SIZE, 2)
-                , new ConfigurableItem<Boolean>(HAS_LEAD, true)
-                , new ConfigurableItem<Integer>(NUMBER_SERIES, 10)
-                , new ConfigurableItem<Integer>(SERIES_LENGTH_DAYS, 4)};
-
-
-        for (ConfigurableItem item : items) {
-            defaultConfiguration.configuration().put(item.name(), item);
-        }
-
-        return defaultConfiguration;
-
-    }
 
 
     @Override
@@ -85,10 +59,10 @@ public class PrayerScheduleFactory implements ScheduleFactory {
     private void fillSchedule(Schedule schedule, List<Participant> participants)
     {
 
-        ConfigurableItem<Integer> groupSize = schedule.configuration().getInteger(TEAM_SIZE);
-        ConfigurableItem<Boolean> teamsHaveLead = schedule.configuration().getBoolean(HAS_LEAD);
-        ConfigurableItem<Integer> numberOfSeriesItems = schedule.configuration().getInteger(NUMBER_SERIES);
-        ConfigurableItem<Integer> seriesLengthInDays = schedule.configuration().getInteger(SERIES_LENGTH_DAYS);
+        ConfigurableItem<Integer> groupSize = schedule.configuration().getInteger(PrayerCircle.TEAM_SIZE);
+        ConfigurableItem<Boolean> teamsHaveLead = schedule.configuration().getBoolean(PrayerCircle.HAS_LEAD);
+        ConfigurableItem<Integer> eventLengthInDays = schedule.configuration().getInteger(PrayerCircle.EVENT_LENGTH_DAYS);
+        ConfigurableItem<Integer> scheduleLengthInDays = schedule.configuration().getInteger(PrayerCircle.SCHEDULE_LENGTH_DAYS);
 
 
 
@@ -98,7 +72,10 @@ public class PrayerScheduleFactory implements ScheduleFactory {
 
         PrayerEvent priorPrayerEvent = null;
         PrayerEvent currentPrayerEvent = null;
-        for (int i = 0; i < numberOfSeriesItems.value(); i++)
+
+        int numberOfSeriesItems = scheduleLengthInDays.value() / eventLengthInDays.value();
+
+        for (int i = 0; i < numberOfSeriesItems; i++)
         {
             priorPrayerEvent = currentPrayerEvent;
             currentPrayerEvent = new PrayerEvent();

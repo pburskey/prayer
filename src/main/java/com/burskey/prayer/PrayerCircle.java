@@ -6,6 +6,7 @@ import com.burskey.prayer.print.ScheduleAsCSVPrinter;
 import com.burskey.prayer.schedule.ConfigurableItem;
 import com.burskey.prayer.schedule.PrayerScheduleFactory;
 import com.burskey.prayer.schedule.Schedule;
+import com.burskey.prayer.schedule.SchedulingConfiguration;
 import com.burskey.prayer.utility.CharacterHelper;
 import com.burskey.prayer.validation.EvenNumberOfParticipants;
 import com.burskey.prayer.validation.PrayerCircleValidation;
@@ -17,6 +18,12 @@ public class PrayerCircle {
 
     private List<Participant> participants = null;
     private Schedule schedule = null;
+    private SchedulingConfiguration configuration = null;
+
+    public static String TEAM_SIZE = "TEAM_SIZE";
+    public static String HAS_LEAD = "HAS_LEAD";
+    public static String EVENT_LENGTH_DAYS = "EVENT_LENGTH_DAYS";
+    public static String SCHEDULE_LENGTH_DAYS = "SCHEDULE_LENGTH_DAYS";
 
 
     public PrayerCircle() {
@@ -26,9 +33,9 @@ public class PrayerCircle {
 
 
 
-        Predicate<String> aPredicate = s -> s.startsWith("a");
-        System.out.println(aPredicate.test("apple"));
-        System.out.println(aPredicate.test("orange"));
+//        Predicate<String> aPredicate = s -> s.startsWith("a");
+//        System.out.println(aPredicate.test("apple"));
+//        System.out.println(aPredicate.test("orange"));
 
 
         PrayerCircle prayerCircle = new PrayerCircle();
@@ -38,19 +45,19 @@ public class PrayerCircle {
             PrayerParticipant participant = new PrayerParticipant();
             participant.setFirst(CharacterHelper.lowerCaseAlphabet[i] + "");
             participant.setLast(CharacterHelper.lowerCaseAlphabet[i] + "");
-            prayerCircle.getParticipants().add(participant);
+            prayerCircle.addParticipant(participant);
         }
 
 
 
 
-        Schedule schedule = prayerCircle.getSchedule(new ConfigurableItem<Integer>(PrayerScheduleFactory.TEAM_SIZE, 2)
-                , new ConfigurableItem<Boolean>(PrayerScheduleFactory.HAS_LEAD, true)
-                , new ConfigurableItem<Integer>(PrayerScheduleFactory.NUMBER_SERIES, 10)
-                , new ConfigurableItem<Integer>(PrayerScheduleFactory.SERIES_LENGTH_DAYS, 4));
+        Schedule schedule = prayerCircle.getSchedule(new ConfigurableItem<Integer>(TEAM_SIZE, 2)
+                , new ConfigurableItem<Boolean>(HAS_LEAD, true)
+                , new ConfigurableItem<Integer>(EVENT_LENGTH_DAYS, 4)
+                , new ConfigurableItem<Integer>(SCHEDULE_LENGTH_DAYS, 40));
 
 
-        prayerCircle.validate();
+
 
         ScheduleAsCSVPrinter print = new ScheduleAsCSVPrinter();
         print.print(prayerCircle);
@@ -61,7 +68,14 @@ public class PrayerCircle {
 
     }
 
-    public List<Participant> getParticipants() {
+    public PrayerCircle addParticipant(Participant aParticipant)
+    {
+        this.getParticipants().add(aParticipant);
+        return this;
+    }
+
+
+    public final List<Participant> getParticipants() {
         if (this.participants == null) {
             this.participants = new ArrayList();
         }
@@ -70,15 +84,12 @@ public class PrayerCircle {
 
     public Schedule getSchedule() {
         if (this.schedule == null) {
-            PrayerScheduleFactory factory = new PrayerScheduleFactory();
-
-            this.schedule = factory.buildFor(this.getParticipants()
-                    , new ConfigurableItem<Integer>("TEAM_SIZE", 2)
-                    , new ConfigurableItem<Boolean>("HAS_LEAD", true)
-                    , new ConfigurableItem<Integer>("SCHEDULE_DURATION_SERIES", 10)
-                    , new ConfigurableItem<Integer>("SCHEDULE_DURATION_DAYS", 4)
+            this.getSchedule(
+                    new ConfigurableItem<Integer>(TEAM_SIZE, 2)
+                    , new ConfigurableItem<Boolean>(HAS_LEAD, true)
+                    , new ConfigurableItem<Integer>(EVENT_LENGTH_DAYS, 4)
+                    , new ConfigurableItem<Integer>(SCHEDULE_LENGTH_DAYS, 40)
             );
-
         }
         return schedule;
     }
@@ -90,7 +101,7 @@ public class PrayerCircle {
 
             this.schedule = factory.buildFor(this.getParticipants(), configurations
             );
-
+            this.validate();
         }
         return schedule;
     }
@@ -99,6 +110,27 @@ public class PrayerCircle {
     public void validate()
     {
         (new PrayerCircleValidation()).validate(this);
+    }
+
+
+    private SchedulingConfiguration defaultConfiguration()
+    {
+        SchedulingConfiguration defaultConfiguration = new SchedulingConfiguration();
+
+
+        ConfigurableItem[] items = new ConfigurableItem[] {
+                new ConfigurableItem<Integer>(TEAM_SIZE, 2)
+                , new ConfigurableItem<Boolean>(HAS_LEAD, true)
+                , new ConfigurableItem<Integer>(EVENT_LENGTH_DAYS, 4)
+                , new ConfigurableItem<Integer>(SCHEDULE_LENGTH_DAYS, 40)};
+
+
+        for (ConfigurableItem item : items) {
+            defaultConfiguration.configuration().put(item.name(), item);
+        }
+
+        return defaultConfiguration;
+
     }
 
 
