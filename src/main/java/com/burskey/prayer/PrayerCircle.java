@@ -36,7 +36,7 @@ public class PrayerCircle {
 
 
         PrayerCircle prayerCircle = new PrayerCircle();
-        int participantsSize = 8;
+        int participantsSize = 10;
 
         for (int i = 0; i < (participantsSize); i++) {
             PrayerParticipant participant = new PrayerParticipant();
